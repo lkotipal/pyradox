@@ -11,6 +11,7 @@ prefixes = [
     r'/Steam/steamapps/common/',
     r'~/Library/Application Support/Steam/steamapps/common/', # mac
     r'~/*steam/steam/SteamApps/common', # linux
+    os.path.expanduser(r'~/.steam/steam/steamapps/common'), # linux
 ]
 
 game_suffixes = {
