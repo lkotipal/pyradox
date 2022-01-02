@@ -3,7 +3,6 @@ import os
 
 import pyradox
 import load.country
-import load.province
 
 
 
@@ -20,12 +19,13 @@ leader_keys = ('fire', 'shock', 'manuever', 'siege')
 s = '{|class = "wikitable sortable"\n'
 s += "! Leader !! Country !! Date !! {{icon|adm}} !! {{icon|dip}} !! {{icon|mil}} !! Total !! {{icon|leader fire}} !! {{icon|leader shock}} !! {{icon|leader maneuver}} !! {{icon|leader siege}} \n"
 
-for tag, country in countries.items():
+for tag in sorted(countries):
+    country = countries[tag]
     country_name = load.country.get_country_name(tag)
     if country_name is None: print('Missing localisation: ' + tag)
 
     for date, data in country.items():
-        if not isinstance(date, pyradox.Date): continue
+        if not isinstance(date, pyradox.Time): continue
         for ruler in data.find_all('monarch'):
             if "leader" in ruler:
                 for key in leader_keys:
@@ -33,7 +33,11 @@ for tag, country in countries.items():
             else:
                 for key in leader_keys:
                     ruler[key] = ''
-            if 'regent' in ruler and ruler['regent']: ruler['name'] += ' (regent)'
+            if 'regent' in ruler and ruler['regent']:
+                if ruler['name'] is None:
+                    ruler['name'] = '(Regency council)'
+                else:
+                    ruler['name'] += ' (regent)'
             # broken file
             if not isinstance(ruler['mil'], int): ruler['mil'] = 0
             ruler['total'] = ruler['adm'] + ruler['dip'] + ruler['mil']
