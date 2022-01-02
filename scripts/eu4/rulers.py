@@ -26,7 +26,7 @@ for tag in sorted(countries):
 
     for date, data in country.items():
         if not isinstance(date, pyradox.Time): continue
-        for ruler in data.find_all('monarch'):
+        for ruler in list(data.find_all('monarch')) + list(data.find_all('monarch_consort')):
             if "leader" in ruler:
                 for key in leader_keys:
                     ruler[key] = str(ruler['leader'][key])
