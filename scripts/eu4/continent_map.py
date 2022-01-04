@@ -2,7 +2,7 @@ import _initpath
 import os
 import re
 import collections
-import province_costs
+# import province_costs
 
 import pyradox
 
@@ -34,26 +34,25 @@ for name, color in color_defs.items():
 print(legend)
 
 continent_map = {}
-for continent, provinces in pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('EU4'), 'map', 'continent.txt'), verbose=False).items():
-    for province_id in provinces:
-        if province_id in continent_map:
-            print('Duplicate continent for province %d' % province_id)
-        else:
-            continent_map[province_id] = continent
+for continent, province_id in pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('EU4'), 'map', 'continent.txt'), verbose=False).items():
+    if province_id in continent_map:
+        print('Duplicate continent for province %d' % province_id)
+    else:
+        continent_map[province_id] = continent
 
 continent_province_count = {}
 continent_base_tax = {}
 continent_production = {}
 continent_manpower = {}
-continent_cost = {}
+# continent_cost = {}
 for continent in color_defs.keys():
     continent_province_count[continent] = 0
     continent_base_tax[continent] = 0
     continent_production[continent] = 0
     continent_manpower[continent] = 0
-    
-    continent_cost[continent] = 0
-    
+
+#     continent_cost[continent] = 0
+
 colormap = {}
 for filename, data in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_directory('EU4'), 'history', 'provinces'), verbose=False):
     m = re.match('\d+', filename)
@@ -65,7 +64,7 @@ for filename, data in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_direct
         continent_base_tax[continent] += data['base_tax']
         continent_production[continent] += data['base_production']
         continent_manpower[continent] += data['base_manpower']
-        continent_cost[continent] += province_costs.province_cost(province_id, data)
+#         continent_cost[continent] += province_costs.province_cost(province_id, data)
         colormap[province_id] = color_defs[continent]
     else:
         print('Missing continent for province %d' % province_id)
@@ -75,9 +74,9 @@ print(continent_province_count)
 print(continent_base_tax)
 print(continent_production)
 print(continent_manpower)
-print(continent_cost)
+# print(continent_cost)
 
-province_map = pyradox.worldmap.ProvinceMap()
+province_map = pyradox.worldmap.ProvinceMap('EU4')
 out = province_map.generate_image(colormap)
 
 if draw_id_s:
