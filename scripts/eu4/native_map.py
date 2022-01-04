@@ -26,8 +26,8 @@ for filename, data in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_direct
         native_size_textmap[province_id] = '%d' % (data['native_size'] * 100)
     elif 'base_tax' in data:
         native_size_colormap[province_id] = (127, 127, 127)
-        
-province_map = pyradox.worldmap.ProvinceMap()
+
+province_map = pyradox.worldmap.ProvinceMap(game = 'EU4')
 image = province_map.generate_image(native_size_colormap)
 province_map.overlay_text(image, native_size_textmap, default_font_color=(255, 255, 255))
 pyradox.image.save_using_palette(image, 'out/native_population_map.png')
@@ -43,10 +43,10 @@ for filename, data in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_direct
         native_aggro_textmap[province_id] = '%d' % data['native_hostileness']
     elif 'base_tax' in data:
         native_aggro_colormap[province_id] = (127, 127, 127)
-        
-province_map = pyradox.worldmap.ProvinceMap()
-image = province_map.generate_image(native_size_colormap)
-province_map.overlay_text(image, native_size_textmap, default_font_color=(255, 255, 255))
+
+province_map = pyradox.worldmap.ProvinceMap(game = 'EU4')
+image = province_map.generate_image(native_aggro_colormap)
+province_map.overlay_text(image, native_aggro_textmap, default_font_color=(255, 255, 255))
 pyradox.image.save_using_palette(image, 'out/native_aggressiveness_map.png')
 
 
