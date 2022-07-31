@@ -27,9 +27,16 @@ class Dialect:
 
 class WikiDialect(Dialect):
     @staticmethod
-    def table_begin(table_classes = ["wikitable sortable"]):
-        return '{| class = "%s" style="text-align: right;"\n' % ' '.join(table_classes)
-    
+    def table_begin(table_classes = ["wikitable"], table_style = 'text-align: right;', collapse = False, sortable = True):
+        table_classes = list(table_classes) # make a copy so it can be modified
+        if collapse:
+            table_classes.append('mw-collapsible mw-collapsed')
+        if sortable:
+            table_classes.append('sortable')
+        if len(table_style) > 0:
+            table_style = 'style="%s"' % table_style
+        return '{| class = "%s" %s\n' % (' '.join(table_classes), table_style)
+
     table_end = '|}\n'
     row_delimiter = '|-\n'
     
