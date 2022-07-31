@@ -46,19 +46,21 @@ def units_at_year(year):
         if 'folder' in tech and 'doctrine' in tech['folder']['name']: continue # ignore doctrines
         if "enable_subunits" in tech:
             for unit_key in tech.find_all("enable_subunits"):
-                units[unit_key]["active"] = True
-                units[unit_key]["last_upgrade"] = max(units[unit_key]["last_upgrade"], tech["start_year"])
+                if unit_key in units:
+                    units[unit_key]["active"] = True
+                    units[unit_key]["last_upgrade"] = max(units[unit_key]["last_upgrade"], tech["start_year"])
         
         if tech["allow"] and tech["allow"]["always"] == False: continue # ignore unallowed techs, but allow subunits through
         
         if "enable_equipments" in tech:
             for equipment_key in tech.find_all("enable_equipments"):
-                equipment = equipments[equipment_key]
-                if "archetype" in equipment:
-                    archetype_key = equipment["archetype"]
-                    equipment_models[archetype_key] = equipments[equipment_key]
-                equipment_models[equipment_key] = equipments[equipment_key]
-                # TODO: drop ordering assumption?
+                if equipment_key in equipments:
+                    equipment = equipments[equipment_key]
+                    if "archetype" in equipment:
+                        archetype_key = equipment["archetype"]
+                        equipment_models[archetype_key] = equipments[equipment_key]
+                    equipment_models[equipment_key] = equipments[equipment_key]
+                    # TODO: drop ordering assumption?
         
         
         # non-equipment modifiers

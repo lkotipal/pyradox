@@ -6,7 +6,7 @@ import pyradox
 
 import os.path
 
-from unitstats import *
+from hoi4.unitstats import *
 
 files = {}
 for unit_type in base_columns.keys():
