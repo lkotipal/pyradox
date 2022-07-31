@@ -44,7 +44,7 @@ def parse_lines(lines, filename):
             yield key.lower(), value
         else:
             # warn
-            warnings.warn_explicit('Could not parse line.' % (colorspace_token_string.lower()), ParseWarning, path, line_number)
+            warnings.warn_explicit('Could not parse line.', ParseWarning, filename, line_number)
 
 def parse(s, path=""):
     lines = s.splitlines()
