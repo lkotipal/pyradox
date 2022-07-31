@@ -18,8 +18,12 @@ total = pyradox.Tree()
 for filename, country in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_directory('HoI4'), 'history', 'countries')):
     tag, name = compute_country_tag_and_name(filename)
     country['tag'] = tag
-    ruling_party = country['set_politics']['ruling_party'] or 'neutrality'
-    country['name'] = pyradox.yml.get_localisation('%s_%s' % (tag, ruling_party), game = 'HoI4')
+    if 'set_politics' in country and 'ruling_party' in country['set_politics'] and country['set_politics']['ruling_party']:
+        ruling_party = country['set_politics']['ruling_party']
+    else:
+        ruling_party = 'neutrality'
+    country['ruling_party'] = ruling_party
+    country['name'] = pyradox.yml.get_localisation('%s_%s' % (tag, ruling_party), game = 'HoI4') or tag
     countries[tag] = country
 
 states = pyradox.txt.parse_merge(os.path.join(pyradox.get_game_directory('HoI4'), 'history', 'states'))
@@ -79,7 +83,7 @@ def sum_keys_function(*sum_keys):
 columns = (
     ('Country', '{{flag|%(name)s}}'),
     ('Tag', '%(tag)s'),
-    ('Ruling party', lambda k, v: (v['set_politics']['ruling_party'] or 'neutrality').title()),
+    ('Ruling party', lambda k, v: (v['ruling_party']).title()),
     ('States', '%(states)d'),
     ('Research slots', lambda k, v: '%d' % (v['set_research_slots'] or 2)),
     ('Core population (M)', lambda k, v: ('%0.2f' % (v['core_manpower'] / 1e6)) if 'core_manpower' in v else '' ),
