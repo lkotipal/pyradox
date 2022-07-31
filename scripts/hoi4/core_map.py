@@ -12,19 +12,8 @@ def compute_country_tag(filename):
     m = re.match('.*([A-Z]{3})\s*-.*\.txt$', filename)
     return m.group(1)
 
-def compute_color(values):
-    if isinstance(values[0], int):
-        # rgb
-        r = values[0]
-        g = values[1]
-        b = values[2]
-        return (r, g, b)
-    else:
-        # hsv
-        return pyradox.image.HSVtoRGB(values)
-     
 
-date = pyradox.Date('1936.1.1')
+date = pyradox.Time('1936.1.1')
 scale = 2.0
 
 # state_id -> [tag]
@@ -36,7 +25,7 @@ country_color_file = pyradox.txt.parse_file(os.path.join(pyradox.get_game_direct
 for filename, country in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_directory('HoI4'), 'history', 'countries')):
     tag = compute_country_tag(filename)
     if tag in country_color_file:
-        country_colors[tag] = compute_color(tuple(country_color_file[tag].find_all('color')))
+        country_colors[tag] = country_color_file[tag].find('color')
     else:
         print('HACK FOR %s' % tag)
         country_colors[tag] = (165, 102, 152)
