@@ -21,10 +21,12 @@ for tech_key, tech in techs.items():
     if "enable_equipments" in tech:
         for equipment_key in tech.find_all("enable_equipments"):
             equipment = equipments[equipment_key]
-            equipment['year'] = year
+            if equipment:
+                equipment['year'] = year
     if "enable_subunits" in tech:
         for unit_key in tech.find_all("enable_subunits"):
-            units[unit_key]["year"] = year
+            if unit_key in units:
+                units[unit_key]["year"] = year
 
 def units_at_year(year):
     units = hoi4.load.get_units()
