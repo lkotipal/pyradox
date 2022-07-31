@@ -6,14 +6,14 @@ import pyradox
 
 import os.path
 
-from unitstats import *
+from hoi4.unitstats import *
 
 f = open("out/priority.txt", "w")
 
 columns = (
     ("Unit", compute_unit_name),
     ("Priority", "%(priority)d"),
-    ("Type", lambda k, v: '<br/>'.join(v['type'])),
+    ("Type", lambda k, v: '<br/>'.join(v.find_all('type'))),
     )
 
 f.write(pyradox.table.make_table(units, 'wiki', columns,
