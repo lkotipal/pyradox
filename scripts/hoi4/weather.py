@@ -9,7 +9,7 @@ import collections
 
 import pyradox
 
-static_modifiers = pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('HoI4'), 'common', 'static_modifiers.txt'))
+static_modifiers = pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('HoI4'), 'common', 'modifiers', '00_static_modifiers.txt'))
 
 def compute_name(k, v):
     return pyradox.format.human_string(k.replace('weather_', ''), cap_first = True)
@@ -28,46 +28,46 @@ def is_weather(k, v):
 
 allcolumns = (
     ('Condition', compute_name),
-    ('Attrition', lambda k, v: pyradox.wiki.colored_percent_string(v['attrition'], color = 'red'), None),
-    ('Winter attrition', lambda k, v: pyradox.wiki.colored_percent_string(v['winter_attrition'], color = 'red'), None),
-    ('Land speed', lambda k, v: pyradox.wiki.colored_percent_string(v['army_speed_factor'], color = 'red'), None),
-    ('Recovery rate', '{{red|%(local_org_regain)0.2f}}', None),
-    ('Entrenchment speed', lambda k, v: pyradox.wiki.colored_percent_string(v['dig_in_speed_factor'], color = 'red'), None),
-    ('Naval speed', lambda k, v: pyradox.wiki.colored_percent_string(v['naval_speed_factor'], color = 'red'), None),
-    ('Naval detection', lambda k, v: pyradox.wiki.colored_percent_string(v['naval_detection'], color = 'red'), None),
-    ('Naval hit chance', lambda k, v: pyradox.wiki.colored_percent_string(v['naval_hit_chance'], color = 'red'), None),
-    ('Air accidents', lambda k, v: pyradox.wiki.colored_percent_string(v['air_accidents'], color = 'red'), None),
-    ('Air detection', lambda k, v: pyradox.wiki.colored_percent_string(v['air_detection'], color = 'red'), None),
-    ('Bombing targeting', lambda k, v: pyradox.wiki.colored_percent_string(v['air_bombing_targetting'], color = 'red'), None),
-    ('Naval strike', lambda k, v: pyradox.wiki.colored_percent_string(v['naval_strike'], color = 'red'), None),
+    ('Attrition', lambda k, v: pyradox.table.wiki_colored_percent_string(v['attrition'], color = 'red')),
+    ('Winter attrition', lambda k, v: pyradox.table.wiki_colored_percent_string(v['winter_attrition'], color = 'red')),
+    ('Land speed', lambda k, v: pyradox.table.wiki_colored_percent_string(v['army_speed_factor'], color = 'red')),
+    ('Recovery rate', '{{red|%(local_org_regain)0.2f}}'),
+    ('Entrenchment speed', lambda k, v: pyradox.table.wiki_colored_percent_string(v['dig_in_speed_factor'], color = 'red')),
+    ('Naval speed', lambda k, v: pyradox.table.wiki_colored_percent_string(v['naval_speed_factor'], color = 'red')),
+    ('Naval detection', lambda k, v: pyradox.table.wiki_colored_percent_string(v['naval_detection'], color = 'red')),
+    ('Naval hit chance', lambda k, v: pyradox.table.wiki_colored_percent_string(v['naval_hit_chance'], color = 'red')),
+    ('Air accidents', lambda k, v: pyradox.table.wiki_colored_percent_string(v['air_accidents'], color = 'red')),
+    ('Air detection', lambda k, v: pyradox.table.wiki_colored_percent_string(v['air_detection'], color = 'red')),
+    ('Bombing targeting', lambda k, v: pyradox.table.wiki_colored_percent_string(v['air_bombing_targetting'], color = 'red')),
+    ('Naval strike', lambda k, v: pyradox.table.wiki_colored_percent_string(v['naval_strike'], color = 'red')),
     )
 
 precipitation_columns = (
     ('Condition', compute_name),
-    ('Recovery rate', '{{red|%(local_org_regain)0.2f}}', None),
-    ('Naval speed', lambda k, v: pyradox.wiki.colored_percent_string(v['naval_speed_factor'], color = 'red'), None),
-    ('Naval detection', lambda k, v: pyradox.wiki.colored_percent_string(v['naval_detection'], color = 'red'), None),
-    ('Naval hit chance', lambda k, v: pyradox.wiki.colored_percent_string(v['naval_hit_chance'], color = 'red'), None),
-    ('Air accidents', lambda k, v: pyradox.wiki.colored_percent_string(v['air_accidents'], color = 'red'), None),
-    ('Air detection', lambda k, v: pyradox.wiki.colored_percent_string(v['air_detection'], color = 'red'), None),
-    ('Bombing targeting', lambda k, v: pyradox.wiki.colored_percent_string(v['air_bombing_targetting'], color = 'red'), None),
-    ('Carrier aircraft can take off', lambda k, v: '{{red|No}}' if 'carrier_traffic' in v else '', None),
-    ('Naval strike efficiency', lambda k, v: pyradox.wiki.colored_percent_string(v['naval_strike'], color = 'red'), None),
+    ('Recovery rate', '{{red|%(local_org_regain)0.2f}}'),
+    ('Naval speed', lambda k, v: pyradox.table.wiki_colored_percent_string(v['naval_speed_factor'], color = 'red')),
+    ('Naval detection', lambda k, v: pyradox.table.wiki_colored_percent_string(v['naval_detection'], color = 'red')),
+    ('Naval hit chance', lambda k, v: pyradox.table.wiki_colored_percent_string(v['naval_hit_chance'], color = 'red')),
+    ('Air accidents', lambda k, v: pyradox.table.wiki_colored_percent_string(v['air_accidents'], color = 'red')),
+    ('Air detection', lambda k, v: pyradox.table.wiki_colored_percent_string(v['air_detection'], color = 'red')),
+    ('Bombing targeting', lambda k, v: pyradox.table.wiki_colored_percent_string(v['air_bombing_targetting'], color = 'red')),
+    ('Carrier aircraft can take off', lambda k, v: '{{red|No}}' if 'carrier_traffic' in v else ''),
+    ('Naval strike efficiency', lambda k, v: pyradox.table.wiki_colored_percent_string(v['naval_strike'], color = 'red')),
     )
 
 temperature_columns = (
     ('Condition', compute_name),
-    ('Attrition', lambda k, v: pyradox.wiki.colored_percent_string(v['attrition'], color = 'red'), None),
-    ('Winter attrition', lambda k, v: pyradox.wiki.colored_percent_string(v['winter_attrition'], color = 'red'), None),
-    ('Recovery rate', '{{red|%(local_org_regain)0.2f}}', None),
-    ('Entrenchment speed', lambda k, v: pyradox.wiki.colored_percent_string(v['dig_in_speed_factor'], color = 'red'), None),
+    ('Attrition', lambda k, v: pyradox.table.wiki_colored_percent_string(v['attrition'], color = 'red')),
+    ('Winter attrition', lambda k, v: pyradox.table.wiki_colored_percent_string(v['winter_attrition'], color = 'red')),
+    ('Recovery rate', '{{red|%(local_org_regain)0.2f}}'),
+    ('Entrenchment speed', lambda k, v: pyradox.table.wiki_colored_percent_string(v['dig_in_speed_factor'], color = 'red')),
     )
 
 ground_effect_columns = (
     ('Condition', compute_name),
-    ('Attrition', lambda k, v: pyradox.wiki.colored_percent_string(v['attrition'], color = 'red'), None),
-    ('Land speed', lambda k, v: pyradox.wiki.colored_percent_string(v['army_speed_factor'], color = 'red'), None),
-    ('Recovery rate', '{{red|%(local_org_regain)0.2f}}', None),
+    ('Attrition', lambda k, v: pyradox.table.wiki_colored_percent_string(v['attrition'], color = 'red')),
+    ('Land speed', lambda k, v: pyradox.table.wiki_colored_percent_string(v['army_speed_factor'], color = 'red')),
+    ('Recovery rate', '{{red|%(local_org_regain)0.2f}}'),
     )
 
 file = open("out/weather.txt", "w")
