@@ -139,14 +139,17 @@ def compute_unit_total_cost(unit_key, unit_data):
     return "%d" % result
     
 def compute_equipment_cost(equipment_key, equipment):
+    if 'build_cost_ic' not in equipment:
+        return '0'
     return '%d' % equipment['build_cost_ic']
     
 def compute_equipment_resource_cost(equipment_key, equipment):
-    if "resources" not in equipment: return '0'
+    if 'resources' not in equipment or 'build_cost_ic' not in equipment:
+        return '0'
     return '%d' % (sum(equipment["resources"].values()) * equipment['build_cost_ic'])
     
 def compute_equipment_total_cost(equipment_key, equipment):
-    result = equipment['build_cost_ic']
+    result = equipment['build_cost_ic'] or 0
     if "resources" in equipment: result *= (1.0 + production_per_resource * sum(equipment["resources"].values()))
     return '%d' % result
 
