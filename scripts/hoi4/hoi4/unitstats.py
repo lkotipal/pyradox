@@ -12,8 +12,9 @@ units = hoi4.load.get_units()
 
 for equipment_key, equipment_value in equipments.items():
     if "archetype" in equipment_value:
-        equipment_value.weak_update(equipments[equipment_value["archetype"]])
-        equipment_value["is_archetype"] = False
+        if equipment_value["archetype"] in equipments:
+            equipment_value.weak_update(equipments[equipment_value["archetype"]])
+            equipment_value["is_archetype"] = False
         
 for tech_key, tech in techs.items():
     if not isinstance(tech, pyradox.Tree): continue
@@ -41,14 +42,15 @@ def units_at_year(year):
     
     for tech_key, tech in techs.items():
         if not isinstance(tech, pyradox.Tree): continue
-        if (tech["start_year"] or year) > year: continue
+        tech_year = tech["start_year"] or default_year
+        if tech_year > year: continue
         
         if 'folder' in tech and 'doctrine' in tech['folder']['name']: continue # ignore doctrines
         if "enable_subunits" in tech:
             for unit_key in tech.find_all("enable_subunits"):
                 if unit_key in units:
                     units[unit_key]["active"] = True
-                    units[unit_key]["last_upgrade"] = max(units[unit_key]["last_upgrade"], tech["start_year"])
+                    units[unit_key]["last_upgrade"] = max(units[unit_key]["last_upgrade"], tech_year)
         
         if tech["allow"] and tech["allow"]["always"] == False: continue # ignore unallowed techs, but allow subunits through
         
@@ -67,7 +69,7 @@ def units_at_year(year):
         for unit_key, unit_data in units.items():
             for tech_unit_key, stats in tech.items():
                 if tech_unit_key == unit_key or tech_unit_key in unit_data.find_all('categories'):
-                    units[unit_key]["last_upgrade"] = max(units[unit_key]["last_upgrade"], tech["start_year"])
+                    units[unit_key]["last_upgrade"] = max(units[unit_key]["last_upgrade"], tech_year)
                     for stat_key, stat_value in stats.items():
                         if (not type(stat_value) is pyradox.Tree):
                             unit_data[stat_key] = (unit_data[stat_key] or 0.0) + stat_value
