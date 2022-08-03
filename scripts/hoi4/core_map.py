@@ -25,18 +25,17 @@ country_color_file = pyradox.txt.parse_file(os.path.join(pyradox.get_game_direct
 for filename, country in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_directory('HoI4'), 'history', 'countries')):
     tag = compute_country_tag(filename)
     if tag in country_color_file:
-        country_colors[tag] = country_color_file[tag].find('color')
+        country_colors[tag] = country_color_file[tag].find('color').to_rgb()
     else:
         print('HACK FOR %s' % tag)
         country_colors[tag] = (165, 102, 152)
-    print(tag, country_colors[tag])
+
     if country['capital'] not in capital_states: capital_states[country['capital']] = []
     capital_states[country['capital']].append(tag)
 
 # Load states.
 states = pyradox.txt.parse_merge(os.path.join(pyradox.get_game_directory('HoI4'), 'history', 'states'))
 province_map = pyradox.worldmap.ProvinceMap(game = 'HoI4')
-
 # provinces -> state id
 colormap = {}
 textcolormap = {}
