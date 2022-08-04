@@ -40,10 +40,10 @@ with open(definition_csv) as definition_file:
         if terrain_key in color_override:
             colormap[province_id] = color_override[terrain_key]
         else:
-            colormap[province_id] = tuple(c for c in terrains[terrain_key]['color'])
+            colormap[province_id] = tuple(c for c in terrains[terrain_key].find_all('color'))
         textmap[province_id] = symbol_override[terrain_key]
 
 province_map = pyradox.worldmap.ProvinceMap(game = 'HoI4')
 out = province_map.generate_image(colormap, default_land_color=(255, 255, 255))
-province_map.overlay_text(out, textmap, fontfile = "unifont-8.0.01.ttf", fontsize = 16, antialias = False, default_offset = (4, -2))
+province_map.overlay_text(out, textmap, fontfile = "unifont.ttf", fontsize = 16, antialias = False, default_offset = (4, -2))
 pyradox.image.save_using_palette(out, 'out/terrain_map.png')
