@@ -310,7 +310,13 @@ class ProvinceMap():
         rel_scale_x = image.size[0] / self.province_image.size[0]
         rel_scale_y = image.size[1] / self.province_image.size[1]
 
-        font = ImageFont.truetype(fontfile, fontsize)
+        try:
+            font = ImageFont.truetype(fontfile, fontsize)
+        except OSError as e:
+            # add a more userfriendly message
+            raise Exception('Can\'t open the font file "{}". Make sure that the font is installed on your system'
+                  ' or place it in the current folder'.format(fontfile)) from e
+
         draw = ImageDraw.Draw(image)
 
         if not antialias: draw.fontmode = "1"
