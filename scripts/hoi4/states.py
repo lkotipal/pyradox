@@ -26,7 +26,10 @@ for filename, country in pyradox.txt.parse_dir(('history', 'countries'), game = 
     country = country.at_time(date)
     tag, name = compute_country_tag_and_name(filename)
     country['tag'] = tag
-    ruling_party = country['set_politics']['ruling_party'] or 'neutrality'
+    if 'set_politics' in country and 'ruling_party' in country['set_politics'] and country['set_politics']['ruling_party']:
+        ruling_party = country['set_politics']['ruling_party']
+    else:
+        ruling_party = 'neutrality'
 
     country['name'] = pyradox.yml.get_localisation('%s_%s' % (tag, ruling_party), game = game)
     countries[tag] = country
