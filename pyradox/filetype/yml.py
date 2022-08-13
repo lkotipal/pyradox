@@ -38,7 +38,7 @@ def parse_lines(lines, filename):
         # Skip blank lines.
         if re.match(r'\s*$', line): continue
         
-        m = re.match(r'\s*([\w\-\.]+):\d?\s*("*)(.*)(\2)\s*$', line)
+        m = re.match(r'\s*([\w\-\.\']+):\d?\s*("*)(.*)(\2)\s*$', line)
         if m is not None:
             key, value = m.group(1, 3)
             yield key.lower(), value

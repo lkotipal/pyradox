@@ -33,7 +33,7 @@ class WikiDialect(Dialect):
             table_classes.append('mw-collapsible mw-collapsed')
         if sortable:
             table_classes.append('sortable')
-        if len(table_style) > 0:
+        if table_style:
             table_style = 'style="%s"' % table_style
         return '{| class = "%s" %s\n' % (' '.join(table_classes), table_style)
 
