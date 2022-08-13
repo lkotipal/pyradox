@@ -1,4 +1,5 @@
 import hoi4
+import pyradox
 
 from PIL import Image
 
