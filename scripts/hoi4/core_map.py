@@ -8,10 +8,6 @@ import pyradox
 
 from PIL import Image
 
-def compute_country_tag(filename):
-    m = re.match('.*([A-Z]{3})\s*-.*\.txt$', filename)
-    return m.group(1)
-
 
 date = pyradox.Time('1936.1.1')
 scale = 2.0
@@ -22,8 +18,7 @@ country_colors = {}
 
 country_color_file = pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('HoI4'), 'common', 'countries', 'colors.txt'))
 
-for filename, country in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_directory('HoI4'), 'history', 'countries')):
-    tag = compute_country_tag(filename)
+for tag, country in hoi4.load.get_countries().items():
     if tag in country_color_file:
         country_colors[tag] = country_color_file[tag].find('color').to_rgb()
     else:

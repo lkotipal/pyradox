@@ -7,20 +7,7 @@ import hoi4
 import pyradox
 
 
-
-def compute_country_tag_and_name(filename):
-    m = re.match('.*([A-Z]{3})\s*-\s*(.*)\.txt$', filename)
-    return m.group(1), m.group(2)
-
-countries = {}
-
-for filename, country in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_directory('HoI4'), 'history', 'countries')):
-    tag, name = compute_country_tag_and_name(filename)
-    country['tag'] = tag
-    ruling_party = country['set_politics']['ruling_party'] or 'neutrality'
-    country['name'] = pyradox.yml.get_localisation('%s_%s' % (tag, ruling_party), game = 'HoI4')
-    if country['name'] is None: print(tag)
-    countries[tag] = country
+countries = hoi4.load.get_countries()
 
 advisor_types = [
     'political_advisor',
@@ -57,6 +44,9 @@ idea_data = pyradox.txt.parse_merge(os.path.join(pyradox.get_game_directory('HoI
 for idea_type in types_to_tabulate:
     ideas = idea_data[idea_type]
     type_name = pyradox.yml.get_localisation(idea_type, game = 'HoI4')
+    if not ideas:
+        print('idea type {} ({}) was not found'.format(idea_type, type_name))
+        continue
     for idea_key, idea in ideas.items():
         if idea_key == 'designer': continue
         row = pyradox.Tree()
@@ -192,11 +182,11 @@ def compute_effects(k, v):
     return result
 
 columns = [
-    ('Name', '%(name)s', None),
-    ('Country', '%(country)s', None),
-    ('Type', '%(type)s', None),
-    ('Trait', '%(trait_display)s', None),
-    ('Effects', compute_effects, None),
+    ('Name', '%(name)s'),
+    ('Country', '%(country)s'),
+    ('Type', '%(type)s'),
+    ('Trait', '%(trait_display)s'),
+    ('Effects', compute_effects),
     ]
 
 if len(types_to_tabulate) == 1:
@@ -207,8 +197,8 @@ out.write(pyradox.table.make_table(result, 'wiki', columns, sort_function = lamb
 out.close()
 
 trait_columns = [
-    ('Trait', '%(name)s', None),
-    ('Effects', '%(text)s', None),
+    ('Trait', '%(name)s'),
+    ('Effects', '%(text)s'),
     ]
 
 out = open("out/traits.txt", "w", encoding = 'utf_8_sig')

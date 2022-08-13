@@ -18,9 +18,6 @@ capital_icon = vp_images[4]
 major_icon = vp_images[9]
 minor_icon = vp_images[14]
 
-def compute_country_tag(filename):
-    m = re.match('.*([A-Z]{3})\s*-.*\.txt$', filename)
-    return m.group(1)
 
 def compute_color(values):
     if isinstance(values[0], int):
@@ -42,8 +39,7 @@ country_colors = {}
 
 country_color_file = pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('HoI4'), 'common', 'countries', 'colors.txt'))
 
-for filename, country in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_directory('HoI4'), 'history', 'countries')):
-    tag = compute_country_tag(filename)
+for tag, country in hoi4.load.get_countries().items():
     if tag in country_color_file:
         country_colors[tag] = country_color_file[tag]['color'].to_rgb()
     else:

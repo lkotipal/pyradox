@@ -8,23 +8,8 @@ import pyradox
 
 game = 'HoI4'
 
-def compute_country_tag_and_name(filename):
-    m = re.match('.*([A-Z]{3})\s*-\s*(.*)\.txt$', filename)
-    return m.group(1), m.group(2)
-
-countries = {}
+countries = hoi4.load.get_countries()
 total = pyradox.Tree()
-
-for filename, country in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_directory('HoI4'), 'history', 'countries')):
-    tag, name = compute_country_tag_and_name(filename)
-    country['tag'] = tag
-    if 'set_politics' in country and 'ruling_party' in country['set_politics'] and country['set_politics']['ruling_party']:
-        ruling_party = country['set_politics']['ruling_party']
-    else:
-        ruling_party = 'neutrality'
-    country['ruling_party'] = ruling_party
-    country['name'] = pyradox.yml.get_localisation('%s_%s' % (tag, ruling_party), game = 'HoI4') or tag
-    countries[tag] = country
 
 states = pyradox.txt.parse_merge(os.path.join(pyradox.get_game_directory('HoI4'), 'history', 'states'))
 state_categories = pyradox.txt.parse_merge(os.path.join(pyradox.get_game_directory(game), 'common', 'state_category'),

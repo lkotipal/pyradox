@@ -16,23 +16,7 @@ else:
 
 localisation_sources = ['state_names']
 
-def compute_country_tag_and_name(filename):
-    m = re.match('.*([A-Z]{3})\s*-\s*(.*)\.txt$', filename)
-    return m.group(1), m.group(2)
-
-countries = {}
-
-for filename, country in pyradox.txt.parse_dir(('history', 'countries'), game = game):
-    country = country.at_time(date)
-    tag, name = compute_country_tag_and_name(filename)
-    country['tag'] = tag
-    if 'set_politics' in country and 'ruling_party' in country['set_politics'] and country['set_politics']['ruling_party']:
-        ruling_party = country['set_politics']['ruling_party']
-    else:
-        ruling_party = 'neutrality'
-
-    country['name'] = pyradox.yml.get_localisation('%s_%s' % (tag, ruling_party), game = game)
-    countries[tag] = country
+countries = hoi4.load.get_countries()
 
 states = pyradox.txt.parse_merge(os.path.join(pyradox.get_game_directory(game), 'history', 'states'))
 state_categories = pyradox.txt.parse_merge(os.path.join(pyradox.get_game_directory(game), 'common', 'state_category'),
@@ -46,7 +30,8 @@ for state in states.values():
     state['owner'] = history['owner']
     state['owner_name'] = countries[history['owner']]['name']
     state['human_name'] = pyradox.yml.get_localisation(state['name'], game = game)
-    country = countries[tag]
+
+    country = countries[state['owner']]
 
     country['states'] = (country['states'] or 0) + 1
 
