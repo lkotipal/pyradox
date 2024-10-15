@@ -5,7 +5,7 @@ import pyradox
 import os
 from PIL import Image
 
-province_map = pyradox.worldmap.ProvinceMap()
+province_map = pyradox.worldmap.ProvinceMap('EU4')
 terrain_map_image = Image.open('in/terrain.png')
 terrain_txt = pyradox.txt.parse_file(os.path.join(os.path.join(pyradox.get_game_directory('EU4'), 'map', 'terrain.txt')))
 

@@ -12,12 +12,11 @@ tree = pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('EU4'), 'm
 terrain_bmp = Image.open(os.path.join(pyradox.get_game_directory('EU4'), 'map', 'terrain.bmp'))
 print(terrain_bmp.getpalette())
 
-province_map = pyradox.worldmap.ProvinceMap()
+province_map = pyradox.worldmap.ProvinceMap('EU4')
 
 colormap = {}
 
 for province_id, position in province_map.positions.items():
-    print(province_id)
     colormap[province_id] = tuple(terrain_bmp.getpixel(position))
 
 for terrain_type, terrain_data in tree['categories'].items():

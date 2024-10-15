@@ -17,6 +17,7 @@ color_defs = collections.OrderedDict([
     ('north_america', (255, 127, 127)), #red
     ('south_america', (127, 255, 127)), #green
     ('oceania', (255, 127, 255)),         #magenta
+    ('serpentspine', (255, 255, 255)),       #white
     ('default', (127, 127, 127)),       #gray
     ])
 
@@ -60,6 +61,8 @@ for filename, data in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_direct
     if 'base_tax' not in data: continue # skip wastelands
     if province_id in continent_map:
         continent = continent_map[province_id]
+        if(continent == 'debug_continent'):
+            continue
         continent_province_count[continent] += 1
         continent_base_tax[continent] += data['base_tax']
         continent_production[continent] += data['base_production']

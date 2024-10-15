@@ -18,7 +18,7 @@ def localized(s):
 
 culture_groups = {}
 
-culture_tree = pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('EU4'), 'common', 'cultures', '00_cultures.txt'))
+culture_tree = pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('EU4'), 'common', 'cultures', 'anb_cultures.txt'))
 
 for group_name, group_data in culture_tree.items():
     for culture in group_data:

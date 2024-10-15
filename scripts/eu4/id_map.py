@@ -9,7 +9,7 @@ import pyradox
 from PIL import Image
 
 # Load the province map using the default location set in pyradox.
-province_map = pyradox.worldmap.ProvinceMap()
+province_map = pyradox.worldmap.ProvinceMap('EU4')
 
 colormap = {}
 for filename, data in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_directory('EU4'), 'history', 'provinces'), verbose=False):

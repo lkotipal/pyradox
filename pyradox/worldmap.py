@@ -328,6 +328,8 @@ class ProvinceMap():
                 # single province: center on that province
                 pos_x, pos_y = self.province_position(province_id, position_type)
             else:
+                if not province_id:
+                    province_id = []
                 # set of provinces: find centroid
                 center_x, center_y = 0.0, 0.0
                 province_count = 0

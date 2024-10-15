@@ -27,7 +27,7 @@ for filename, data in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_direct
     if province_value > -1:
         colormap[province_id] = colors[province_value][1]
         
-province_map = pyradox.worldmap.ProvinceMap()
+province_map = pyradox.worldmap.ProvinceMap('EU4')
 out = province_map.generate_image(colormap)
 pyradox.image.save_using_palette(out, 'out/trade_center_map.png')
 

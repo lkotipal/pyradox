@@ -11,7 +11,7 @@ from PIL import Image
 
 region_colors = pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('EU4'), 'map', 'area.txt'))
         
-province_map = pyradox.worldmap.ProvinceMap()
+province_map = pyradox.worldmap.ProvinceMap('EU4')
 
 region_colors = pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('EU4'), 'common', 'region_colors', '00_region_colors.txt'))
 regions = pyradox.txt.parse_file(os.path.join(pyradox.get_game_directory('EU4'), 'map', 'region.txt'))
