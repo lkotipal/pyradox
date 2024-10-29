@@ -24,9 +24,9 @@ def parse_file(path, game = None, path_relative_to_game = True, headings = None)
         pass
     else:
         path, game = pyradox.config.combine_path_and_game(path, game)
-   
-    with open(path, encoding=encoding) as f:
-        lines = [line for line in f.readlines() if not re.match('#.*', line)]
+    encodings = pyradox.txt.game_encodings[game]
+
+    lines = [line for line in pyradox.txt.readlines(path, encodings) if not re.match('#.*', line)]
     return parse(lines, path, headings = headings)
     
 def parse_dir(dirname):
