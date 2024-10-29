@@ -38,6 +38,16 @@ def parse_dir(dirname):
             if ext == ".csv":
                 yield filename, parse_file(fullpath)
 
+
+def parse_merge(path, game=None, merge_levels=0, *args, **kwargs):
+    """Given a directory, return a Tree as if all .csv files in the directory were a single file"""
+    path, game = pyradox.config.combine_path_and_game(path, game)
+
+    result = pyradox.Tree()
+    for filename, tree in parse_dir(path):
+        result.merge(tree, merge_levels)
+    return result
+
 def parse(lines, filename, headings = None):
     """ headings: Specify the headings explicitly. Otherwise they are read from the first line in the file. """
     reader = csv.reader(lines, dialect = ParadoxDialect)
