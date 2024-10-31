@@ -25,15 +25,23 @@ slot_icons = {
     'planet_killer' : 'wd',
     }
 
-def average_damage(weapon):
+def min_damage(weapon):
     if 'damage' in weapon:
-        min_damage = weapon['damage']['min']
-        max_damage = weapon['damage']['max']
+       return weapon['damage']['min']
     else:
-        min_damage = weapon.find('min_damage', 0)
-        max_damage = weapon.find('max_damage', 0)
-    
-    return 0.5 * (min_damage + max_damage)
+        return weapon.find('min_damage', 0)
+
+def max_damage(weapon):
+    if 'damage' in weapon:
+        return weapon['damage']['max']
+    else:
+        return weapon.find('max_damage', 0)
+
+def average_damage(weapon):
+    return 0.5 * (min_damage(weapon) + max_damage(weapon))
+
+def damage_string(k, weapon):
+    return f'{min_damage(weapon)}–{max_damage(weapon)} ({average_damage(weapon)})'
 
 def normalized_dps(weapon):
     if 'count' in weapon:
@@ -53,6 +61,15 @@ def normalized_dps(weapon):
     accuracy_mult = weapon['accuracy']
     result = dps_per_size * accuracy_mult * effectiveness_numerator / effectiveness_denominator / effectiveness_denominator
     return result
+
+def unnormalized_dps(weapon):
+    return weapon.find('count', 1) * average_damage(weapon) / weapon.find('cooldown', 0) * weapon['accuracy']
+
+def weapon_range(key, weapon):
+    min_range = weapon.find('min_range', 0)
+    max_range = weapon['range']
+
+    return f'{round(min_range)}–{round(max_range)}'
 
 def float_to_255(x):
     x = round(255.0 * x)
@@ -165,8 +182,11 @@ def is_missile(key, weapon):
         return False
     return weapon['missile_health'] > 0.0
 
+def is_mutation(key, weapon):
+    return 'icon' in weapon and 'mutation' in weapon['icon']
+
 def slot_string(key, weapon):
-    return '{{icon|slot %s}}' % slot_icons[weapon['size'].lower()]
+    return 'style="text-align: center;" | {{icon|slot %s}}' % slot_icons[weapon['size'].lower()]
 
 def icon_and_name(k, v):
     name = pyradox.get_localisation(k, game = 'Stellaris')
@@ -182,7 +202,7 @@ def icon_and_name(k, v):
     else:
         icon_tag = ''
 
-    return '%s %s' % (icon_tag, name)
+    return 'style="text-align: left;" | %s %s' % (icon_tag, name)
     
 def icon_and_name_and_role(k, v):
     line_0 = icon_and_name(k, v)
@@ -193,7 +213,11 @@ def icon_and_name_and_role(k, v):
         return '%s<br/>%s' % (line_0, line_1)
     
 def weapon_category(key, weapon):
-    if weapon['type'] == 'instant': return weapon['tags'] or 'none'
+    if weapon['type'] == 'instant':
+        if weapon['tags']:
+            return ', '.join(tag for tag in weapon.find_all('tags') if not tag.endswith('_slot'))
+        else:
+            return 'none'
     else: return weapon['type'] or 'none'
     
 def sort_function(key, weapon):
