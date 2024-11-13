@@ -20,18 +20,18 @@ for filename, data in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_direct
 
 # Create a blank map and scale it up 2x.
 out = province_map.generate_image(colormap, default_land_color=(97, 97, 97), default_water_color=(68, 107, 163), edge_color=(255, 255, 255))
-out = out.resize((out.size[0] * 2, out.size[1] * 2), Image.NEAREST)
+#out = out.resize((out.size[0] * 2, out.size[1] * 2), Image.NEAREST)
 
 # Create the map labels.
 textmap = {}
 colormap = {}
-for province_id in province_map.positions.keys():
-    textmap[province_id] = '%d' % province_id
+for province_id in province_map.positions['centroid']:
+    textmap[province_id] = f'{province_id}'
     if province_map.is_water_province(province_id):
-        colormap[province_id] = (0, 0, 0)
+        colormap[id] = (0, 0, 0)
     else:
-        colormap[province_id] = (0, 0, 0)
+        colormap[id] = (0, 0, 0)
 
-province_map.overlay_text(out, textmap, colormap = colormap, fontfile = "tahoma.ttf", fontsize = 9, antialias = False)
+province_map.overlay_text(out, textmap, colormap = colormap, fontfile = "tahoma.ttf", fontsize = 8, antialias = False)
 out.save('out/province__id_map.png')
 #pyradox.image.save_using_palette(out, 'out/province__id_map.png')
